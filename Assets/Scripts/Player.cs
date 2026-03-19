@@ -9,17 +9,20 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
 
     private Rigidbody2D rb;
+    private Animator animator;
     private bool isGrounded;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         Move();
         Jump();
+        UpdateAnimations();
     }
 
     private void Move()
@@ -37,8 +40,17 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            animator.SetTrigger("Jump");
         }
     }
+
+    private void UpdateAnimations()
+    {
+        bool isWalking = Mathf.Abs(rb.linearVelocity.x) > 0.1f;
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isGrounded", isGrounded);
+    }
+
 
     private void CheckGround()
     {
