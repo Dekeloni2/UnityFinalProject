@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerMagnetism.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Simple 2D Platformer BE2\ReadMe\Scripts\ReadmeBE2.cs" />
     <Compile Include="Assets\Scripts\MagneticObject.cs" />
     <Compile Include="Assets\Scripts\MagnetSwitch.cs" />
     <Compile Include="Assets\Scripts\FollowCamera.cs" />

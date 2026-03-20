@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private bool isGrounded;
+    public Transform spriteTransform;
 
     private void Awake()
     {
@@ -24,13 +25,18 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         UpdateAnimations();
     }
-
     private void Move()
     {
         float inputX = Input.GetAxisRaw("Horizontal");
+
         Vector2 velocity = rb.linearVelocity;
         velocity.x = inputX * moveSpeed;
         rb.linearVelocity = velocity;
+
+        if (inputX > 0)
+            spriteTransform.localScale = new Vector3(1, 1, 1);
+        else if (inputX < 0)
+            spriteTransform.localScale = new Vector3(-1, 1, 1);
     }
 
     private void Jump()
@@ -48,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isWalking = Mathf.Abs(rb.linearVelocity.x) > 0.1f;
         animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isGrounded", isGrounded);
     }
 
 
