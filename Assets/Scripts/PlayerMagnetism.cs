@@ -3,21 +3,17 @@ using UnityEngine;
 public class PlayerMagnetism : MonoBehaviour
 {
     public float magnetRange = 5f;
-    public KeyCode attractKey = KeyCode.E;
+    public KeyCode magnetKey = KeyCode.E;
     public KeyCode repelKey = KeyCode.Q;
 
     private void Update()
     {
-        if (Input.GetKey(attractKey))
-        {
+        if (Input.GetKey(magnetKey))
             ApplyMagnet(true);
-        }
-        else if (Input.GetKey(repelKey))
-        {
-            ApplyMagnet(false);
-        }
-    }
 
+        else if (Input.GetKey(repelKey))
+            ApplyMagnet(false);
+    }
     private void ApplyMagnet(bool attract)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, magnetRange);
@@ -28,15 +24,13 @@ public class PlayerMagnetism : MonoBehaviour
             if (magnet == null)
                 continue;
 
-            if (attract)
-                magnet.Attract(transform.position);
-            else
-                magnet.Repel(transform.position);
+            magnet.ApplyMagnet(transform.position, attract);
         }
     }
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, magnetRange);
     }
 }
