@@ -18,6 +18,15 @@ public class MagnetObject : MonoBehaviour
 
     public float magnetForce = 10f;
     public float maxVelocity = 5f;
+    
+    public LayerMask groundLayer;
+    public float groundCheckRadius = 0.1f;
+    public Transform groundCheckPoint;
+
+    public bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+    }
 
     private Rigidbody2D rb;
 
@@ -48,6 +57,27 @@ public class MagnetObject : MonoBehaviour
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxVelocity);
     }
 
+    public void SetDynamic(bool isDynamic)
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+
+        if (isDynamic)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+        else
+        {
+            if (!IsGrounded())
+            {
+                rb.bodyType = RigidbodyType2D.Dynamic;
+                return;
+            }
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+    }
+    
     public void ToggleColor()
     {
         if (type != MagnetType.Colored)
@@ -67,6 +97,6 @@ public class MagnetObject : MonoBehaviour
             return;
         }
 
-        sr.color = currentColor == MagnetColor.Blue ? Color.cyan : Color.red;
+        sr.color = currentColor == MagnetColor.Blue ? Color.blue : Color.red;
     }
 }

@@ -8,12 +8,15 @@ public class PlayerMagnetism : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(magnetKey))
-            ApplyMagnet(true);
+        bool attracting = Input.GetKey(magnetKey);
+        bool repelling = Input.GetKey(repelKey);
 
-        else if (Input.GetKey(repelKey))
-            ApplyMagnet(false);
+        if (attracting || repelling)
+            ApplyMagnet(attracting);
+        else
+            ResetMagnetObjects();
     }
+    
     private void ApplyMagnet(bool attract)
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, magnetRange);
@@ -24,7 +27,22 @@ public class PlayerMagnetism : MonoBehaviour
             if (magnet == null)
                 continue;
 
+            magnet.SetDynamic(true);
             magnet.ApplyMagnet(transform.position, attract);
+        }
+    }
+    
+    private void ResetMagnetObjects()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, magnetRange);
+
+        foreach (var hit in hits)
+        {
+            MagnetObject magnet = hit.GetComponent<MagnetObject>();
+            if (magnet == null)
+                continue;
+
+            magnet.SetDynamic(false); // זה גם מאפס מהירות
         }
     }
 
