@@ -458,6 +458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagneticItem (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3144230934621584616, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: magnetForce
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4370613440796184537, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.7727077
@@ -496,6 +500,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4370613440796184537, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029740046541978635, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029740046541978635, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2667,6 +2679,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagneticItem
       objectReference: {fileID: 0}
+    - target: {fileID: 3144230934621584616, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: magnetForce
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4370613440796184537, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.904
@@ -2707,6 +2723,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5029740046541978635, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029740046541978635, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029740046541978635, guid: 414006293d5161c44afe72316a7d2c3c, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2718,10 +2746,10 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 6417754508426050530}
   - {fileID: 1184578059}
   - {fileID: 1277261984}
   - {fileID: 862128706}
   - {fileID: 4557088535974019394}
+  - {fileID: 6417754508426050530}
   - {fileID: 417059896}
   - {fileID: 892330712}
