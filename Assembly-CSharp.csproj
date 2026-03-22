@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Assets\groundLayer.cs" />
     <Compile Include="Assets\ColorSwitchButton.cs" />
+    <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\Scripts\PlayerMagnetism.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Simple 2D Platformer BE2\ReadMe\Scripts\ReadmeBE2.cs" />
