@@ -88,24 +88,38 @@ public class Enemy : MonoBehaviour
                 break;
 
             case EnemyState.Falling:
-                CheckFall();
+                Falling();
                 break;
         }
 
         UpdateAnimations();
     }
-
-    // -------------------------
-    // 1) ראיית שחקן
-    // -------------------------
+    
+    //Checks if a player is in front of it
     private bool PlayerInSight()
     {
-        return Vector2.Distance(transform.position, player.position) < sightRange;
-    }
+        //If the player is too far, nothing to check
+        if (Vector2.Distance(transform.position, player.position) > sightRange)
+            return false;
 
-    // -------------------------
-    // 2) תנועה
-    // -------------------------
+        //Direction from the player
+        Vector2 direction = (player.position - transform.position).normalized;
+
+        //Raycast to check a wall
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            direction,
+            sightRange,
+            ~playerLayer 
+        ); 
+        
+       //If we hit something that isn't a player 
+        if (hit.collider != null && hit.collider.transform != player)
+            return false;
+
+        return true;
+    }
+    
     private void Patrol()
     {
         if (PlayerInSight())
@@ -118,14 +132,14 @@ public class Enemy : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(direction * patrolSpeed, rb.linearVelocity.y);
 
-            // בדיקת קיר
+            //Checks if there is a wall in front of it
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * direction, 0.5f);
             if (hit.collider != null && !hit.collider.isTrigger)
             {
                 direction *= -1;
             }
 
-            // עצירה אקראית
+            //Random stop
             if (Random.value < stopChance * Time.deltaTime)
                 StartCoroutine(StopRoutine());
         }
@@ -142,6 +156,8 @@ public class Enemy : MonoBehaviour
         state = EnemyState.Patrol;
     }
 
+    
+    //Chases the player
     private void Chase()
     {
         if (!PlayerInSight())
@@ -154,25 +170,29 @@ public class Enemy : MonoBehaviour
         rb.linearVelocity = new Vector2(dir * chaseSpeed, rb.linearVelocity.y);
     }
 
-    // -------------------------
-    // 3) תגובה למגנטיות
-    // -------------------------
+    //What happens when the player uses E or Q keys for Magnetism
     
     public void ApplyMagnetPhysics(Vector3 sourcePosition, bool attract)
     {
         if (state == EnemyState.Heavy || state == EnemyState.Dead)
             return;
 
-        // עצירה של התנועה העצמאית
+        //Stops independent movement
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
         Vector2 direction = attract
-            ? (sourcePosition - transform.position).normalized
-            : (transform.position - sourcePosition).normalized;
+            ? (sourcePosition - transform.position)
+            : (transform.position - sourcePosition);
 
-        rb.AddForce(direction * 15f); // אפשר לכוון את הכוח
+        direction.y = 0; //Disables vertical force so the enemy wont go flying
+        direction = direction.normalized;
+
+        rb.AddForce(direction * 15f);
     }
     
+    
+    //Function for if the player uses Magnetism for too long
+    //Enemy increases Mass and doesn't magnetize
     private IEnumerator BecomeHeavy()
     {
         state = EnemyState.Heavy;
@@ -190,7 +210,7 @@ public class Enemy : MonoBehaviour
         if (state == EnemyState.Heavy || state == EnemyState.Dead)
             return;
 
-        // עצירת תנועה בזמן מגנטיות
+       //Stops movement during magnetize
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
         magnetTimer += Time.deltaTime;
@@ -218,9 +238,7 @@ public class Enemy : MonoBehaviour
         state = EnemyState.Patrol;
     }
 
-    // -------------------------
-    // 4) מוות מנפילה
-    // -------------------------
+    //Falling functions
     private void CheckFall()
     {
         if (transform.position.y < fallYThreshold && state != EnemyState.Dead)
