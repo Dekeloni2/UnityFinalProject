@@ -6,11 +6,19 @@ public class PlayerMagnetism : MonoBehaviour
     public KeyCode attractKey = KeyCode.E;
     public KeyCode repelKey = KeyCode.Q;
 
+    private bool attracting;
+    private bool repelling;
+
     private void Update()
     {
-        bool attracting = Input.GetKey(attractKey);
-        bool repelling = Input.GetKey(repelKey);
+        attracting = Input.GetKey(attractKey);
+        repelling = Input.GetKey(repelKey);
+    }
 
+    //This takes care of the Magnetism not being consitent.
+    //It was mostly depending on the player's FPS.
+    private void FixedUpdate()
+    {
         bool magnetActive = attracting || repelling;
 
         if (magnetActive)
@@ -25,17 +33,17 @@ public class PlayerMagnetism : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            // --- מגנט אובייקטים רגילים ---
+            //Magnetic Objects magnetism
             MagnetObject magnet = hit.GetComponent<MagnetObject>();
             if (magnet != null)
                 magnet.ApplyMagnet(transform.position, attract);
 
-            // --- אויבים ---
+            // Enemies magnetism
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy != null)
             {
                 enemy.ApplyMagnetPhysics(transform.position, attract);
-                enemy.ApplyMagnetForce(); // מודד זמן עד שהוא נהיה כבד
+                enemy.ApplyMagnetForce();
             }
         }
     }

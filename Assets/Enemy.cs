@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D rb;
     private Transform player;
-    private Animator animator;
+    private Animator animator;  
 
     private int direction = 1;
     private bool isStopping = false;
@@ -66,6 +66,9 @@ public class Enemy : MonoBehaviour
     
     private void Update()
     {
+        Debug.DrawRay(transform.position, Vector2.right * direction * sightRange, Color.red);
+        Debug.Log(state);
+
         if (state == EnemyState.Dead)
             return;
 
@@ -94,32 +97,33 @@ public class Enemy : MonoBehaviour
 
         UpdateAnimations();
     }
-    
+
     //Checks if a player is in front of it
     private bool PlayerInSight()
     {
-        //If the player is too far, nothing to check
+        // אם השחקן רחוק מדי — לא רואים אותו
         if (Vector2.Distance(transform.position, player.position) > sightRange)
             return false;
 
-        //Direction from the player
-        Vector2 direction = (player.position - transform.position).normalized;
-
-        //Raycast to check a wall
-        RaycastHit2D hit = Physics2D.Raycast(
-            transform.position,
-            direction,
-            sightRange,
-            ~playerLayer 
-        ); 
-        
-       //If we hit something that isn't a player 
-        if (hit.collider != null && hit.collider.transform != player)
+        // אם השחקן לא נמצא בכיוון שהאויב מסתכל — לא רואים אותו
+        float dirToPlayer = Mathf.Sign(player.position.x - transform.position.x);
+        if (dirToPlayer != direction)
             return false;
 
-        return true;
+        // Raycast קדימה בלבד
+        Vector2 origin = transform.position;
+        Vector2 dir = Vector2.right * direction;
+
+        RaycastHit2D hit = Physics2D.Raycast(
+            origin,
+            dir,
+            sightRange,
+            playerLayer
+        );
+
+        return hit.collider != null;
     }
-    
+
     private void Patrol()
     {
         if (PlayerInSight())
@@ -171,26 +175,23 @@ public class Enemy : MonoBehaviour
     }
 
     //What happens when the player uses E or Q keys for Magnetism
-    
+
     public void ApplyMagnetPhysics(Vector3 sourcePosition, bool attract)
     {
         if (state == EnemyState.Heavy || state == EnemyState.Dead)
             return;
 
-        //Stops independent movement
-        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-
         Vector2 direction = attract
             ? (sourcePosition - transform.position)
             : (transform.position - sourcePosition);
 
-        direction.y = 0; //Disables vertical force so the enemy wont go flying
+        direction.y = 0;
         direction = direction.normalized;
 
-        rb.AddForce(direction * 15f);
+        rb.AddForce(direction * 15f, ForceMode2D.Force);
     }
-    
-    
+
+
     //Function for if the player uses Magnetism for too long
     //Enemy increases Mass and doesn't magnetize
     private IEnumerator BecomeHeavy()
