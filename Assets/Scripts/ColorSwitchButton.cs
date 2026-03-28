@@ -56,9 +56,9 @@ public class ColorSwitchButton : MonoBehaviour
 
     public void ActivateScene()
     {
-        if (!played)
+        if (!CutsceneFlags.yellowButtonExplained)
         {
-            played = true;
+            CutsceneFlags.yellowButtonExplained = true;
             StartCoroutine(ShowYellowButtonCutscene());
         }
     }

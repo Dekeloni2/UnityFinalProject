@@ -25,19 +25,16 @@ public class CutsceneText : MonoBehaviour
 
     public IEnumerator ShowText(string sentence)
     {
-        Debug.Log("ShowText START: " + sentence);
-
         textUI.text = "";
 
         foreach (char c in sentence)
         {
             textUI.text += c;
-            Debug.Log("Typed: " + c);
-            yield return new WaitForSeconds(0.03f);
-        }
 
-        Debug.Log("ShowText END");
+            yield return new WaitForSeconds(typingSpeed);
+        }
     }
+    
     public void ResetText()
     {
         Debug.Log("ResetText CALLED");

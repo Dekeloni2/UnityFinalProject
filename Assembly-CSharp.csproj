@@ -47,18 +47,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\groundLayer.cs" />
-    <Compile Include="Assets\OrangeBoxCutscene.cs" />
+    <Compile Include="Assets\Scripts\DoorCutscene.cs" />
     <Compile Include="Assets\Scripts\MagneticItemCutscene.cs" />
+    <Compile Include="Assets\Scripts\DoorFunction.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\CutsceneFlags.cs" />
     <Compile Include="Assets\Scripts\PlayerMagnetism.cs" />
-    <Compile Include="Assets\DoorCutscene.cs" />
+    <Compile Include="Assets\Scripts\OrangeBoxCutscene.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\ButtonCutscene.cs" />
     <Compile Include="Assets\Sprites\Simple 2D Platformer BE2\ReadMe\Scripts\ReadmeBE2.cs" />
-    <Compile Include="Assets\DoorFunction.cs" />
+    <Compile Include="Assets\EnemyEncounterScene.cs" />
     <Compile Include="Assets\Scripts\RedBoxCutscene.cs" />
     <Compile Include="Assets\Scripts\Laser.cs" />
-    <Compile Include="Assets\LaserScene.cs" />
+    <Compile Include="Assets\Scripts\LaserScene.cs" />
     <Compile Include="Assets\Scripts\ColorSwitchButton.cs" />
     <Compile Include="Assets\Scripts\MagneticObject.cs" />
     <Compile Include="Assets\Scripts\MagnetSwitch.cs" />

@@ -35,6 +35,10 @@ public class Enemy : MonoBehaviour
     public float fallDeathTime = 3f;
     public float fallYThreshold = -10f;
 
+    
+    public CutsceneText cutscene;
+    private bool fallCutscenePlayed = false;
+    private bool heavyCutscenePlayed = false;
     private float magnetTimer = 0f;
     private float fallTimer = 0f;
 
@@ -99,16 +103,13 @@ public class Enemy : MonoBehaviour
     //Checks if a player is in front of it
     private bool PlayerInSight()
     {
-        // �� ����� ���� ��� � �� ����� ����
         if (Vector2.Distance(transform.position, player.position) > sightRange)
             return false;
-
-        // �� ����� �� ���� ������ ������ ����� � �� ����� ����
+        
         float dirToPlayer = Mathf.Sign(player.position.x - transform.position.x);
         if (dirToPlayer != direction)
             return false;
-
-        // Raycast ����� ����
+        
         Vector2 origin = transform.position;
         Vector2 dir = Vector2.right * direction;
 
@@ -216,6 +217,15 @@ public class Enemy : MonoBehaviour
 
         if (magnetTimer >= magnetStunTime)
             StartCoroutine(BecomeHeavy());
+        
+        if (!heavyCutscenePlayed && cutscene != null)
+        {
+            heavyCutscenePlayed = true;
+            StartCoroutine(cutscene.ShowMultiple(
+                "Damn, when he enters this state, my powers don't work on him.",
+                "Maybe if I wait he will resume back to normal."
+            ));
+        }
     }
 
     public void ResetMagnetTimer()
@@ -223,26 +233,25 @@ public class Enemy : MonoBehaviour
         if (state != EnemyState.Heavy)
             magnetTimer = 0f;
     }
-
-    private IEnumerator MagnetDeny()
-    {
-        state = EnemyState.Heavy;
-        rb.mass = heavyMass;
-
-        yield return new WaitForSeconds(heavyMassDuration);
-
-        rb.mass = normalMass;
-        magnetTimer = 0f;
-
-        state = EnemyState.Patrol;
-    }
-
+    
     //Falling functions
     private void CheckFall()
     {
         if (transform.position.y < fallYThreshold && state != EnemyState.Dead)
         {
-            state = EnemyState.Falling;
+            if (state != EnemyState.Falling)
+            {
+                state = EnemyState.Falling;
+
+                if (!fallCutscenePlayed && cutscene != null)
+                {
+                    fallCutscenePlayed = true;
+                    StartCoroutine(cutscene.ShowMultiple(
+                        "He isn't going to bother me anymore.",
+                        "I should however be careful with future enemies."
+                    ));
+                }
+            }
         }
     }
 
@@ -253,6 +262,10 @@ public class Enemy : MonoBehaviour
         if (fallTimer >= fallDeathTime)
         {
             state = EnemyState.Dead;
+
+            if (cutscene != null)
+                cutscene.ResetText();
+
             Destroy(gameObject);
         }
     }
