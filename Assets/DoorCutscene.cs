@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class DoorCutscene : MonoBehaviour
 {
     public CutsceneText cutscene;
     private bool played = false;
+    
     public void Open()
     {
         if (!played)

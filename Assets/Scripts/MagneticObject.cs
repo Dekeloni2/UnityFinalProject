@@ -8,20 +8,21 @@ public enum MagnetType
 public enum MagnetColor
 {
     Blue,
-    Red
+    Red,
+    Orange
 }
 
 public class MagnetObject : MonoBehaviour
 {
     public MagnetType type = MagnetType.Colored;
     public MagnetColor currentColor = MagnetColor.Blue;
-    
-    
+
+    public float jumpBoostMultiplier = 2f;
     public float magnetForce = 10f;
     public float maxVelocity = 5f;
 
     private Rigidbody2D rb;
-    
+
 
     private void Awake()
     {
@@ -40,16 +41,32 @@ public class MagnetObject : MonoBehaviour
         }
         else
         {
-            if (currentColor == MagnetColor.Blue)
-                direction = (sourcePosition - transform.position).normalized;
-            else
-                direction = (transform.position - sourcePosition).normalized;
+            switch (currentColor)
+            {
+                case MagnetColor.Blue:
+                    direction = (sourcePosition - transform.position).normalized;
+                    break;
+
+                case MagnetColor.Red:
+                    direction = (transform.position - sourcePosition).normalized;
+                    break;
+
+                case MagnetColor.Orange:
+                    direction = attract
+                        ? (sourcePosition - transform.position).normalized
+                        : (transform.position - sourcePosition).normalized;
+                    break;
+
+                default:
+                    direction = Vector2.zero;
+                    break;
+            }
         }
 
         rb.AddForce(direction * magnetForce);
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxVelocity);
     }
-    
+
     public void ToggleColor()
     {
         if (type != MagnetType.Colored)
@@ -59,6 +76,22 @@ public class MagnetObject : MonoBehaviour
         UpdateColorVisual();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (currentColor == MagnetColor.Orange && collision.collider.CompareTag("Player"))
+        {
+            // בדיקה שהשחקן הגיע מלמעלה
+            if (collision.contacts[0].normal.y < -0.5f)
+            {
+                PlayerMovement player = collision.collider.GetComponent<PlayerMovement>();
+                if (player != null)
+                {
+                    player.ApplyJumpBoost(jumpBoostMultiplier);
+                }
+            }
+        }
+    }
+    
     private void UpdateColorVisual()
     {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
@@ -69,6 +102,11 @@ public class MagnetObject : MonoBehaviour
             return;
         }
 
-        sr.color = currentColor == MagnetColor.Blue ? Color.blue : Color.red;
+        if (currentColor == MagnetColor.Blue)
+            sr.color = Color.blue;
+        else if (currentColor == MagnetColor.Red)
+            sr.color = Color.red;
+        else if (currentColor == MagnetColor.Orange)
+            sr.color = new Color(1f, 0.5f, 0f);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RedBoxCutscene : MonoBehaviour
+public class LaserScene : MonoBehaviour
 {
     public CutsceneText cutscene;
     private bool triggered = false;
@@ -15,9 +15,9 @@ public class RedBoxCutscene : MonoBehaviour
             triggered = true;
 
             StartCoroutine(cutscene.ShowMultiple(
-                "Seems like my powers are only able to push the red box",
-                "I wonder what will happen if I push this yellow button", 
-                "If I press F, I should click it."
+                "This laser is extremely dangerous",
+                "Looks like I cannot bring any boxes with me if this laser is here",
+                "I should be careful with it."
             ));
         }
     }

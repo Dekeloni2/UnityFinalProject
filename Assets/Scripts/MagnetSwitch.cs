@@ -4,8 +4,9 @@ public class MagnetSwitch : MonoBehaviour
 {
     public enum RequiredColor { Any, Red, Blue }
     public RequiredColor requiredColor = RequiredColor.Any;
-
-    public Door door;
+    
+    public DoorCutscene door;
+    public DoorFunction  doorFunction;
     public Animator animator;
 
     private bool isPressed = false;
@@ -26,20 +27,21 @@ public class MagnetSwitch : MonoBehaviour
             isPressed = true;
             animator.SetBool("Pressed", true);
             door.Open();
+            doorFunction.Open();
         }
     }
 
     private bool IsCorrectColor(MagnetObject magnet)
     {
-        // אם הכפתור מוגדר כ-Any → כל בלוק מפעיל אותו
+        //Will open a door if any color
         if (requiredColor == RequiredColor.Any)
             return true;
 
-        // אם הבלוק הוא Normal → מפעיל כל כפתור
+        //Will open the door if the magnet type is normal
         if (magnet.type == MagnetType.Normal)
             return true;
 
-        // התאמת צבעים
+        //Color matching for both red and blue
         if (requiredColor == RequiredColor.Red && magnet.currentColor == MagnetColor.Red)
             return true;
 

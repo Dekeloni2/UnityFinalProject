@@ -49,6 +49,11 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Jump");
         }
     }
+    
+    public void ApplyJumpBoost(float multiplier)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * multiplier);
+    }
 
     private void UpdateAnimations()
     {

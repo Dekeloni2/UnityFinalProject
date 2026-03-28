@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class ColorSwitchButton : MonoBehaviour
 {
@@ -6,6 +7,10 @@ public class ColorSwitchButton : MonoBehaviour
     public MagnetObject targetBox;
 
     private Animator animator;
+
+    // Cutscene
+    public CutsceneText cutscene;
+    private bool played = false;
 
     private void Awake()
     {
@@ -17,14 +22,17 @@ public class ColorSwitchButton : MonoBehaviour
         if (playerInRange && Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("Button pressed!");
-            
+
             if (animator != null)
                 animator.SetTrigger("Pressed");
-            
+
             if (targetBox != null)
                 targetBox.ToggleColor();
             else
                 Debug.LogWarning("No targetBox assigned!");
+
+            //Will activate the cutscene
+            ActivateScene();
         }
     }
 
@@ -44,5 +52,23 @@ public class ColorSwitchButton : MonoBehaviour
             playerInRange = false;
             Debug.Log("Player left trigger");
         }
+    }
+
+    public void ActivateScene()
+    {
+        if (!played)
+        {
+            played = true;
+            StartCoroutine(ShowYellowButtonCutscene());
+        }
+    }
+
+    private IEnumerator ShowYellowButtonCutscene()
+    {
+        yield return StartCoroutine(cutscene.ShowMultiple(
+            "I see. Yellow buttons change the box colors.",
+            "Red is only able to be pushed, blue is only able to be pulled",
+            "Let's pull this box to the button"
+        ));
     }
 }
