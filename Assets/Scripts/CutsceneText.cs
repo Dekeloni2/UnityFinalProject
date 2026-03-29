@@ -6,6 +6,9 @@ public class CutsceneText : MonoBehaviour
 {
     public TextMeshProUGUI textUI;
     public float typingSpeed = 0.03f;
+    
+    public AudioSource audioSource;
+    public AudioClip blipSound;
 
     public static CutsceneText Instance;
 
@@ -31,10 +34,16 @@ public class CutsceneText : MonoBehaviour
         {
             textUI.text += c;
 
+            if (c != ' ' && blipSound != null && audioSource != null)
+            {
+                audioSource.pitch = Random.Range(0.9f, 1.2f);
+                audioSource.PlayOneShot(blipSound);
+            }
+
             yield return new WaitForSeconds(typingSpeed);
         }
     }
-    
+
     public void ResetText()
     {
         Debug.Log("ResetText CALLED");

@@ -10,10 +10,9 @@ public class ColorSwitchButton : MonoBehaviour
 
     // Cutscene
     public CutsceneText cutscene;
-    private bool played = false;
-
     private void Awake()
     {
+        Debug.Log("Cutscene flag = " + CutsceneFlags.yellowButtonExplained);
         animator = GetComponent<Animator>();
     }
 
@@ -56,11 +55,16 @@ public class ColorSwitchButton : MonoBehaviour
 
     public void ActivateScene()
     {
+        Debug.Log("Before: " + CutsceneFlags.yellowButtonExplained);
+
         if (!CutsceneFlags.yellowButtonExplained)
         {
             CutsceneFlags.yellowButtonExplained = true;
+            Debug.Log("Cutscene triggered!");
             StartCoroutine(ShowYellowButtonCutscene());
         }
+
+        Debug.Log("After: " + CutsceneFlags.yellowButtonExplained);
     }
 
     private IEnumerator ShowYellowButtonCutscene()

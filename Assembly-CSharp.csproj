@@ -55,12 +55,14 @@
     <Compile Include="Assets\Scripts\PlayerMagnetism.cs" />
     <Compile Include="Assets\Scripts\OrangeBoxCutscene.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\FinalPuzzleScene.cs" />
     <Compile Include="Assets\Scripts\ButtonCutscene.cs" />
     <Compile Include="Assets\Sprites\Simple 2D Platformer BE2\ReadMe\Scripts\ReadmeBE2.cs" />
     <Compile Include="Assets\EnemyEncounterScene.cs" />
     <Compile Include="Assets\Scripts\RedBoxCutscene.cs" />
     <Compile Include="Assets\Scripts\Laser.cs" />
     <Compile Include="Assets\Scripts\LaserScene.cs" />
+    <Compile Include="Assets\DarkBoxScript.cs" />
     <Compile Include="Assets\Scripts\ColorSwitchButton.cs" />
     <Compile Include="Assets\Scripts\MagneticObject.cs" />
     <Compile Include="Assets\Scripts\MagnetSwitch.cs" />
@@ -88,6 +90,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\readme.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />

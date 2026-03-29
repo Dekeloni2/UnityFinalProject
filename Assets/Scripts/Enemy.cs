@@ -247,8 +247,7 @@ public class Enemy : MonoBehaviour
                 {
                     fallCutscenePlayed = true;
                     StartCoroutine(cutscene.ShowMultiple(
-                        "He isn't going to bother me anymore.",
-                        "I should however be careful with future enemies."
+                        "He isn't going to bother me anymore."
                     ));
                 }
             }
