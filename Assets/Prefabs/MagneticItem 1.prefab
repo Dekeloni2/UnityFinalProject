@@ -211,7 +211,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   currentColor: 0
-  magnetForce: 700
+  jumpBoostMultiplier: 2
+  magnetForce: 450
   maxVelocity: 5
 --- !u!61 &5200656505897353623
 BoxCollider2D:
@@ -350,3 +351,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58160f234fcde14892e27cff380d498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutscene: {fileID: 0}
