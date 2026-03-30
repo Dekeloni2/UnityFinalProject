@@ -6,7 +6,6 @@ public class MagnetSwitch : MonoBehaviour
     public RequiredColor requiredColor = RequiredColor.Any;
     
     public DoorCutscene door;
-    public DoorFunction  doorFunction;
     public Animator animator;
 
     private bool isPressed = false;
@@ -27,7 +26,6 @@ public class MagnetSwitch : MonoBehaviour
             isPressed = true;
             animator.SetBool("Pressed", true);
             door.Open();
-            doorFunction.Open();
         }
     }
 

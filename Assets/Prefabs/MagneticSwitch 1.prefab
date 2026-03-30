@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6577b87179b286e4d8566a59dfb7a831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  requiredColor: 0
   door: {fileID: 0}
   animator: {fileID: 1013330536028424468}
 --- !u!50 &7817963374995333177
@@ -168,7 +169,7 @@ BoxCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.003225021, y: -0.04252714}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0.01, z: 0, w: 0}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.22, y: 0.13}
     newSize: {x: 0.22, y: 0.13}
