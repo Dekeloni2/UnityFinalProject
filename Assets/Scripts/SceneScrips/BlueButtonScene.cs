@@ -8,13 +8,11 @@ public class BlueButtonCutscene : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Trigger hit: " + other.name);
         if (triggered)
             return;
 
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player detected — starting cutscene");
             triggered = true;
 
             StartCoroutine(cutscene.ShowMultiple(
@@ -23,7 +21,6 @@ public class BlueButtonCutscene : MonoBehaviour
         }
         else
         {
-            Debug.Log("But it's NOT the player");
         }
     }
 }

@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class LevelExit : MonoBehaviour
 {
-    private bool playerInRange = false;
+    private bool playerInRange = false;      // True when the player is standing inside the exit trigger
 
-    public FadeController fade; 
-    public CutsceneText cutscene;
-    public MusicPlayer music;
+    public FadeController fade;              // Handles screen fade-in and fade-out effects
+    public CutsceneText cutscene;            // Handles cutscene dialogue text
+    public MusicPlayer music;                // Controls background music fading
 
     private void Update()
     {
+        // If the player is inside the exit area and presses the interact key, start the exit sequence
         if (playerInRange && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
             Debug.Log("LevelExit: key pressed, starting sequence");
@@ -20,6 +21,7 @@ public class LevelExit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Detect when the player enters the exit trigger
         if (collision.CompareTag("Player"))
         {
             playerInRange = true;
@@ -29,6 +31,7 @@ public class LevelExit : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        // Detect when the player leaves the exit trigger
         if (collision.CompareTag("Player"))
         {
             playerInRange = false;
@@ -38,6 +41,7 @@ public class LevelExit : MonoBehaviour
 
     private void QuitGame()
     {
+        // Quit the game. In the editor, stop play mode instead.
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -47,8 +51,10 @@ public class LevelExit : MonoBehaviour
 
     private IEnumerator EnterDoorSequence()
     {
+        // Fade the screen to black before starting the cutscene
         yield return StartCoroutine(fade.FadeOut());
-        
+
+        // Display a sequence of cutscene dialogue lines
         yield return StartCoroutine(cutscene.ShowMultiple(
             "I really don't know why I appeared here all of a sudden",
             "All of my memories are blank",
@@ -59,14 +65,18 @@ public class LevelExit : MonoBehaviour
             "These questions will remain unanswered unless I act...",
             "....."
         ));
-        
+
+        // Fade out the music if a music player exists
         if (music != null)
             yield return StartCoroutine(music.FadeOutMusic());
 
+        // Small pause before the final fade
         yield return new WaitForSeconds(2f);
-        
+
+        // Fade out again for dramatic effect before quitting
         yield return StartCoroutine(fade.FadeOut());
-        
+
+        // Exit the game
         QuitGame();
     }
 }

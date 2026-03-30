@@ -7,7 +7,11 @@ public class LaserDestroyScene : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("[LaserDestroyScene] Trigger entered by: " + other.name);
         if (triggered)
+            return;
+
+        if (other.CompareTag("Laser"))
             return;
 
         if (other.CompareTag("MagneticObject"))
