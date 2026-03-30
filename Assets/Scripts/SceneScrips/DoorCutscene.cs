@@ -8,29 +8,56 @@ public class DoorCutscene : MonoBehaviour
 
     public void Open()
     {
+        Debug.Log($"[DoorCutscene] Open() called on {gameObject.name}");
+
+        // הדלת תמיד תיפתח
+        OpenDoor();
+
+        // ה-Cutscene רק פעם אחת
         if (!played)
         {
+            Debug.Log("[DoorCutscene] First time opening, triggering cutscene");
             played = true;
             StartCoroutine(ActivateScene());
         }
+        else
+        {
+            Debug.Log("[DoorCutscene] Cutscene already played, skipping");
+        }
+    }
+
+    private void OpenDoor()
+    {
+        Debug.Log("[DoorCutscene] Door disabled");
+        gameObject.SetActive(false);
     }
 
     public IEnumerator ActivateScene()
     {
-        if (CutsceneFlags.doorCutscene) yield break;
+        Debug.Log($"[DoorCutscene] ActivateScene() called. Flag = {CutsceneFlags.doorCutscene}");
+
+        if (CutsceneFlags.doorCutscene)
+        {
+            Debug.Log("[DoorCutscene] Global cutscene flag already true, skipping cutscene");
+            yield break;
+        }
+
         CutsceneFlags.doorCutscene = true;
-        Debug.Log("Cutscene triggered!");
+        Debug.Log("[DoorCutscene] Cutscene triggered!");
+
         yield return StartCoroutine(ShowDoorCutscene());
     }
 
     private IEnumerator ShowDoorCutscene()
     {
+        Debug.Log("[DoorCutscene] Starting ShowDoorCutscene()");
+
         yield return StartCoroutine(cutscene.ShowMultiple(
             "I see, doors can only be unlocked once I move a box on the buttons.",
             "I cannot manually push the button by standing on it, I have to use a box",
             "I will keep that in mind for the future."
         ));
 
-        gameObject.SetActive(false);
+        Debug.Log("[DoorCutscene] Cutscene finished");
     }
 }

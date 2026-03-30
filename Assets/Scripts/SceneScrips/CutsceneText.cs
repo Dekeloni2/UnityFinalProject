@@ -14,11 +14,9 @@ public class CutsceneText : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("CutsceneText Awake — setting Instance");
 
         if (Instance != null && Instance != this)
         {
-            Debug.Log("Duplicate CutsceneText destroyed");
             Destroy(gameObject);
             return;
         }
@@ -46,25 +44,21 @@ public class CutsceneText : MonoBehaviour
 
     public void ResetText()
     {
-        Debug.Log("ResetText CALLED");
         StopAllCoroutines();
         textUI.text = "";
     }
 
     public IEnumerator ShowMultiple(params string[] sentences)
     {
-        Debug.Log("ShowMultiple START — got " + sentences.Length + " sentences");
 
         ResetText();
 
         foreach (string s in sentences)
         {
-            Debug.Log("Starting sentence: " + s);
             yield return StartCoroutine(ShowText(s));
             yield return new WaitForSeconds(1f);
         }
-
-        Debug.Log("ShowMultiple END");
+        
         textUI.text = "";
     }
 }
