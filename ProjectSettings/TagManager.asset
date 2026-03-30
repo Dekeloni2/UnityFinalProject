@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - MagneticObject
+  - Laser
   layers:
   - Default
   - TransparentFX

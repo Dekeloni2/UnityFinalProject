@@ -46,11 +46,13 @@ public class Enemy : MonoBehaviour
     private Transform player;              // Reference to the player
     private Animator animator;             // Controls enemy animations
 
+    private Vector3 originalScale;
     private int direction = 1;             // Current facing direction (1 = right, -1 = left)
     private bool isStopping = false;       // Whether the enemy is currently paused
 
     private void Awake()
     {
+        originalScale = transform.localScale;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -130,7 +132,6 @@ public class Enemy : MonoBehaviour
 
     private void Patrol()
     {
-        // If the player is seen, switch to chase mode
         if (PlayerInSight())
         {
             state = EnemyState.Chase;
@@ -139,7 +140,6 @@ public class Enemy : MonoBehaviour
 
         if (!isStopping)
         {
-            // Move in the current direction
             rb.linearVelocity = new Vector2(direction * patrolSpeed, rb.linearVelocity.y);
 
             // Detect walls and turn around
@@ -147,10 +147,10 @@ public class Enemy : MonoBehaviour
             if (hit.collider != null && !hit.collider.isTrigger)
             {
                 direction *= -1;
-                transform.localScale = new Vector3(direction, 1, 1);
+                transform.localScale = new Vector3(originalScale.x * direction, originalScale.y, originalScale.z);
             }
 
-            // Random chance to stop
+            // Random stop
             if (Random.value < stopChance * Time.deltaTime)
                 StartCoroutine(StopRoutine());
         }
@@ -176,14 +176,13 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        // Determine direction toward the player
         float dir = Mathf.Sign(player.position.x - transform.position.x);
 
-        // Update facing direction
         direction = (int)dir;
-        transform.localScale = new Vector3(direction, 1, 1);
 
-        // Move toward the player
+        // Flip using original scale
+        transform.localScale = new Vector3(originalScale.x * direction, originalScale.y, originalScale.z);
+
         rb.linearVelocity = new Vector2(direction * chaseSpeed, rb.linearVelocity.y);
     }
 
@@ -248,7 +247,7 @@ public class Enemy : MonoBehaviour
             magnetTimer = 0f;
     }
 
-    // Detects if the enemy has fallen off the map
+    // Detects if the enemy has fallen off the map and plays a scene
     private void CheckFall()
     {
         if (transform.position.y < fallYThreshold && state != EnemyState.Dead)
